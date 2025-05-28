@@ -1,0 +1,48 @@
+name: Deploy to Cloudflare Pages
+
+on:
+  # 推送到主分支时触发
+  push:
+    branches: [ main ]
+  
+  # 手动触发
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy to Cloudflare Pages
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+        env:
+          NODE_ENV: production
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: red-packet-dapp
+          directory: dist
+          # Optional: git info
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Add deployment summary
+        run: |
+          echo "🚀 部署完成！" >> $GITHUB_STEP_SUMMARY
+          echo "📦 项目: 红包 DApp" >> $GITHUB_STEP_SUMMARY
+          echo "🌐 访问链接将在 Cloudflare Pages 中显示" >> $GITHUB_STEP_SUMMARY
