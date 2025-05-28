@@ -1,6 +1,6 @@
 # 🧧 红包 DApp - Webpack 版本
 
-基于以太坊的去中心化红包系统，使用 **Webpack + React + Web3** 技术栈构建。
+基于以太坊的去中心化红包系统，使用 **Webpack + React + Web3** 技术栈构建，支持一键部署到 **Cloudflare Pages**。
 
 ## ✨ 特色功能
 
@@ -10,27 +10,29 @@
 - 📱 **响应式设计**: 完美适配移动端和桌面端
 - ⚡ **现代化 UI**: 毛玻璃效果和流畅动画
 - 🛠️ **标准 Web3 语法**: 使用业界标准的 Web3 开发模式
+- 🚀 **Cloudflare Pages 部署**: 一键部署到全球 CDN
 
 ## 🚀 快速开始
 
 ### 前置要求
 
-- Node.js 16+
+- Node.js 18+
 - npm 或 yarn
 - MetaMask 浏览器插件
+- Cloudflare 账户（用于部署）
 
-### 安装依赖
+### 本地开发
 
 ```bash
+# 克隆项目
+git clone https://github.com/ObjBird/red-packet-dapp-webpack.git
+cd red-packet-dapp-webpack
+
+# 安装依赖
 npm install
-```
 
-### 启动开发服务器
-
-```bash
+# 启动开发服务器
 npm run dev
-# 或
-npm start
 ```
 
 应用将在 `http://localhost:3000` 启动
@@ -39,6 +41,71 @@ npm start
 
 ```bash
 npm run build
+```
+
+## 🌐 部署到 Cloudflare Pages
+
+### 方法一：自动部署 (推荐)
+
+1. **设置 GitHub Secrets**
+   ```
+   CLOUDFLARE_API_TOKEN: 你的 Cloudflare API Token
+   CLOUDFLARE_ACCOUNT_ID: 你的 Cloudflare Account ID
+   ```
+
+2. **推送代码到 GitHub**
+   ```bash
+   git push origin main
+   ```
+
+3. **自动部署**
+   - GitHub Actions 将自动构建和部署
+   - 部署完成后可在 Cloudflare Dashboard 查看链接
+
+### 方法二：手动部署
+
+```bash
+# 安装 Wrangler CLI
+npm install -g wrangler
+
+# 登录 Cloudflare
+wrangler login
+
+# 部署到生产环境
+npm run pages:deploy
+
+# 部署到预览环境
+npm run pages:deploy:preview
+```
+
+### 方法三：本地预览
+
+```bash
+# 构建项目
+npm run build
+
+# 本地预览 Pages 环境
+npm run pages:dev
+```
+
+## 🔧 Cloudflare Pages 配置
+
+### 构建设置
+- **构建命令**: `npm run build`
+- **构建输出目录**: `dist`
+- **Node.js 版本**: 18
+
+### 环境变量
+可在 Cloudflare Pages 控制台添加以下环境变量：
+```
+NODE_ENV=production
+```
+
+### 自定义域名
+在 `wrangler.toml` 中取消注释并设置你的域名：
+```toml
+[env.production.vars]
+CUSTOM_DOMAIN = "your-domain.com"
 ```
 
 ## 🏗️ 项目架构
@@ -76,9 +143,10 @@ src/
 - **Babel**: JavaScript 编译器
 - **CSS Loader**: 样式处理
 
-### 开发工具
-- **Webpack Dev Server**: 开发服务器
-- **Hot Module Replacement**: 热更新
+### 部署平台
+- **Cloudflare Pages**: 全球 CDN 部署
+- **Cloudflare Workers**: 边缘计算支持
+- **GitHub Actions**: 自动化 CI/CD
 
 ## 🎯 核心功能
 
@@ -155,14 +223,6 @@ const result = await contract.createRedPacket({
 const result = await contract.claimRedPacket(packetId);
 ```
 
-### 状态管理
-
-使用 React Hooks 进行状态管理，避免复杂的状态管理库：
-
-- `useState`: 组件本地状态
-- `useEffect`: 副作用处理
-- `useCallback`: 函数缓存优化
-
 ## 🎨 样式设计
 
 - **设计语言**: Modern Glassmorphism
@@ -178,6 +238,8 @@ const result = await contract.claimRedPacket(packetId);
 - ✅ 用户输入验证
 - ✅ Error Boundary 错误捕获
 - ✅ Gas Limit 设置
+- ✅ HTTPS 强制加密
+- ✅ 安全头部配置
 
 ## 📱 浏览器兼容性
 
@@ -185,6 +247,28 @@ const result = await contract.claimRedPacket(packetId);
 - ✅ Firefox 88+
 - ✅ Safari 14+
 - ✅ Edge 90+
+
+## 🚀 性能优化
+
+### Cloudflare Pages 优化
+- ✅ 全球 CDN 加速
+- ✅ 静态资源缓存
+- ✅ Gzip/Brotli 压缩
+- ✅ HTTP/2 支持
+
+### 代码优化
+- ✅ Webpack 代码分割
+- ✅ Tree Shaking
+- ✅ 资源压缩
+- ✅ 懒加载组件
+
+## 📊 部署统计
+
+部署后可在 Cloudflare Analytics 查看：
+- 📈 访问量统计
+- 🌍 全球分布
+- ⚡ 加载性能
+- 🔒 安全监控
 
 ## 🤝 贡献指南
 
@@ -203,7 +287,10 @@ MIT License - 详见 [LICENSE](LICENSE) 文件
 - [React](https://reactjs.org/) - 前端框架
 - [Ethers.js](https://docs.ethers.io/) - 以太坊交互
 - [Webpack](https://webpack.js.org/) - 构建工具
+- [Cloudflare Pages](https://pages.cloudflare.com/) - 部署平台
 
 ---
+
+**🔥 立即体验**: [在线预览链接](https://red-packet-dapp.pages.dev) (部署后可用)
 
 **注意**: 本项目仅用于学习和演示目的，请勿在生产环境中使用未经审计的智能合约。
