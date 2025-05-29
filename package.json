@@ -6,7 +6,11 @@
   "scripts": {
     "start": "webpack serve --mode development",
     "build": "webpack --mode production",
-    "dev": "webpack serve --mode development --open"
+    "dev": "webpack serve --mode development --open",
+    "pages:build": "npm run build",
+    "pages:dev": "wrangler pages dev dist --compatibility-date=2024-01-01",
+    "pages:deploy": "npm run build && wrangler pages deploy dist",
+    "pages:deploy:preview": "npm run build && wrangler pages deploy dist --env=preview"
   },
   "dependencies": {
     "@web3-react/core": "^8.2.3",
@@ -28,15 +32,20 @@
     "style-loader": "^3.3.0",
     "webpack": "^5.88.0",
     "webpack-cli": "^5.1.0",
-    "webpack-dev-server": "^4.15.0"
+    "webpack-dev-server": "^4.15.0",
+    "wrangler": "^3.0.0"
   },
   "keywords": [
     "ethereum",
     "web3",
     "react",
     "dapp",
-    "red-packet"
+    "red-packet",
+    "cloudflare-pages"
   ],
   "author": "ObjBird",
-  "license": "MIT"
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
 }
