@@ -249,6 +249,20 @@ body {
   color: #555;
 }
 
+/* Tech Stack */
+.tech-stack {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #e1e5e9;
+}
+
+.tech-stack p {
+  font-size: 14px;
+  color: #888;
+  font-style: italic;
+  margin: 0;
+}
+
 /* Section Headers */
 .section-header {
   text-align: center;

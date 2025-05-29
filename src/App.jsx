@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { useWeb3 } from './hooks/useWeb3';
-import { useRedPacketContract } from './hooks/useRedPacketContract';
+import { useRedPacketDApp } from './hooks/useRedPacketDApp';
 import WalletConnection from './components/WalletConnection';
 import CreateRedPacket from './components/CreateRedPacket';
 import ClaimRedPackets from './components/ClaimRedPackets';
@@ -9,9 +8,8 @@ import './styles/App.css';
 const App = () => {
   const [activeTab, setActiveTab] = useState('create');
   
-  // Web3 状态管理
-  const web3 = useWeb3();
-  const contract = useRedPacketContract(web3.signer);
+  // 使用合并的 DApp hook
+  const dapp = useRedPacketDApp();
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
@@ -24,14 +22,14 @@ const App = () => {
         <div className="container">
           <div className="brand">
             <h1>🧧 红包 DApp</h1>
-            <p>基于以太坊的去中心化红包系统</p>
+            <p>基于以太坊的去中心化红包系统 (Web3-React 版本)</p>
           </div>
           
           {/* 网络状态指示 */}
-          {web3.isConnected && (
+          {dapp.isConnected && (
             <div className="network-info">
               <div className="network-badge">
-                🌐 Chain ID: {web3.chainId}
+                🌐 Chain ID: {dapp.chainId}
               </div>
             </div>
           )}
@@ -41,14 +39,14 @@ const App = () => {
       {/* 钱包连接区域 */}
       <section className="wallet-section">
         <div className="container">
-          <WalletConnection web3={web3} />
+          <WalletConnection web3={dapp} />
         </div>
       </section>
 
       {/* 主要内容区域 */}
       <main className="main-content">
         <div className="container">
-          {web3.isConnected ? (
+          {dapp.isConnected ? (
             <>
               {/* 标签导航 */}
               <nav className="tab-navigation">
@@ -71,9 +69,9 @@ const App = () => {
               {/* 标签内容 */}
               <div className="tab-content">
                 {activeTab === 'create' ? (
-                  <CreateRedPacket web3={web3} contract={contract} />
+                  <CreateRedPacket web3={dapp} contract={dapp} />
                 ) : (
-                  <ClaimRedPackets web3={web3} contract={contract} />
+                  <ClaimRedPackets web3={dapp} contract={dapp} />
                 )}
               </div>
             </>
@@ -90,6 +88,9 @@ const App = () => {
                   <li>🔒 安全的智能合约保障</li>
                   <li>⚡ 快速的链上交易</li>
                 </ul>
+                <div className="tech-stack">
+                  <p>技术栈：React + Web3-React + Ethers.js</p>
+                </div>
               </div>
             </div>
           )}
@@ -101,8 +102,8 @@ const App = () => {
         <div className="container">
           <div className="footer-content">
             <div className="footer-info">
-              <p>红包 DApp - Webpack 版本</p>
-              <p>基于 React + Ethers.js + Web3 技术栈</p>
+              <p>红包 DApp - Web3-React 版本</p>
+              <p>基于 React + Web3-React + Ethers.js 技术栈</p>
             </div>
             <div className="footer-links">
               <a href="https://github.com/ObjBird/red-packet-dapp-webpack" 
@@ -116,13 +117,13 @@ const App = () => {
       </footer>
 
       {/* 全局加载状态 */}
-      {(web3.isConnecting || contract.loading) && (
+      {(dapp.isConnecting || dapp.contractLoading) && (
         <div className="global-loading">
           <div className="loading-backdrop">
             <div className="loading-spinner">
               <div className="spinner"></div>
               <p>
-                {web3.isConnecting ? '连接钱包中...' : '处理交易中...'}
+                {dapp.isConnecting ? '连接钱包中...' : '处理交易中...'}
               </p>
             </div>
           </div>

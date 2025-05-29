@@ -22,7 +22,7 @@ export const NETWORKS = {
   LOCAL: {
     chainId: '0x539', // 1337 in hex
     chainName: 'Local Network',
-    rpcUrls: ['http://localhost:8545'],
+    rpcUrls: ['http://localhost:7545'],
     nativeCurrency: {
       name: 'Ethereum',
       symbol: 'ETH',
